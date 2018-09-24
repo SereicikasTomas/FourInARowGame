@@ -30,7 +30,5 @@ class Board {
             for(let space of column){
                 space.drawSVGSpace();
             }
-        }
     }
-
 }

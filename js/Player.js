@@ -1,9 +1,9 @@
 class Player {
-    constructor(name, id, color, turn = false){
+    constructor(name, id, color, active = false){
         this.name = name;
         this.id = id;
         this.color = color;
-        this.turn = turn;
+        this.active = active;
         this.tokens = this.createTokens(21);
     }
 
@@ -36,6 +36,6 @@ class Player {
      * @return {Object} First token object in the array of unused tokens
      */
     get activeToken(){
-        return player.unusedTokens()[0];
+        return this.unusedTokens[0];
     }
 }
