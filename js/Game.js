@@ -36,6 +36,22 @@ class Game {
     }
 
     /**
+     * Branches code, depending on what key player presses
+     * @param   {Object}    e - Keydown event object
+     */
+    handleKeydown(e){
+        if(this.ready){
+            if(e.key === 'ArrowLeft'){
+                this.activePlayer.activeToken.moveLeft();
+            }else if(e.key === 'ArrowRight'){
+                this.activePlayer.activeToken.moveRight(this.board.columns);
+            }else if(e.key === 'ArrowDown'){
+                this.playToken();
+            }
+        }
+    }
+
+    /**
      * Finds Space object to drop Token into, drops Token
      */
     playToken(){
@@ -51,26 +67,39 @@ class Game {
         }
 
         if (targetSpace !== null) {
+            const game = this;
             game.ready = false;
-            activeToken.drop(targetSpace);
+            
+            activeToken.drop(targetSpace, function(){
+                game.updateGameState(activeToken, targetSpace);           
+    		}); 
         }
     }
 
     /**
-     * Branches code, depending on what key player presses
-     * @param   {Object}    e - Keydown event object
+     * Updates game state after token is dropped. 
+     * @param   {Object}  token  -  The token that's being dropped.
+     * @param   {Object}  target -  Targeted space for dropped token.
      */
-    handleKeydown(e){
-        if(this.ready){
-            if(e.key === 'ArrowLeft'){
-                this.activePlayer.activeToken.moveLeft();
-            }else if(e.key === 'ArrowRight'){
-                this.activePlayer.activeToken.moveRight(this.board.columns);
-            }else if(e.key === 'ArrowDown'){
-                this.playToken();
+    updateGameState(token, target) {
+		target.mark(token);
+
+        if (!this.checkForWin(target)) {
+            console.log('no win');
+			this.switchPlayers();
+            
+            if (this.activePlayer.checkTokens()) {
+                this.activePlayer.activeToken.drawHTMLToken();
+                this.ready = true;
+            } else {
+                this.gameOver('No more tokens');
             }
+        } else {
+			console.log('win');
+            this.gameOver(`${target.owner.name} wins!`)
         }
     }
+
 
     /** 
      * Checks if there a winner on the board after each token drop.
@@ -154,4 +183,5 @@ class Game {
         document.getElementById('game-over').style.display = 'block';
         document.getElementById('game-over').textContent = message;
     }
+
 }

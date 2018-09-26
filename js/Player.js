@@ -11,6 +11,7 @@ class Player {
     /**
     * Creates token objects for player
     * @param   {integer}   num - Number of token objects to be created
+    * @return  {array}     tokens - an arary of new token objects
     */
     createTokens(num){
         const tokens = [];
@@ -28,7 +29,7 @@ class Player {
      * @return {array} Array of unused tokens
      */
     get unusedTokens(){
-        return this.tokens.filter(token => !token.dopped);
+        return this.tokens.filter(token => !token.dropped);
     }
 
     /**
@@ -37,5 +38,17 @@ class Player {
      */
     get activeToken(){
         return this.unusedTokens[0];
+    }
+
+    /**
+     * Check if a player has any undropped tokens left
+     * @return {Boolean} 
+     */
+    checkTokens(){
+        if(this.unusedTokens.length == 0){
+            return false;
+        }else{
+            return true;
+        }
     }
 }
