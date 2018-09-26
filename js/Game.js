@@ -5,7 +5,7 @@ class Game {
         this.ready = false;
     }
     
-    
+
     /** 
      * Returns active player.
      * @return  {Object}    player - The active player.
@@ -131,5 +131,27 @@ class Game {
         }
 
         return win;
+    }
+
+    /** 
+     * Switches active player. 
+     */
+    switchPlayers() {
+        for (let player of this.players) {
+			if (player.active === true){
+                player.active = false;
+            } else if (player.active === false){
+                player.active = true;
+            }
+		}
+    }
+    
+    /** 
+     * Displays game over message.
+     * @param {string} message - Game over message.      
+     */
+    gameOver(message){
+        document.getElementById('game-over').style.display = 'block';
+        document.getElementById('game-over').textContent = message;
     }
 }
